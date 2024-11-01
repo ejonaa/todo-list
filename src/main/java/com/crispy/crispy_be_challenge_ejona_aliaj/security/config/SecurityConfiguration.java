@@ -25,7 +25,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration {
 
-    public static final String[] PUBLIC_URIS = new String[]{"/h2/**", "/api/authenticate"};
+    public static final String[] PUBLIC_URIS = new String[]{"/h2/**", "/api/authenticate", "/api/create-account"};
 
     private final JwtRequestFilter jwtRequestFilter;
 

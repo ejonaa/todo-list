@@ -34,9 +34,6 @@ public class UserEntity {
     @Column(name = "LAST_NAME")
     private String lastName;
 
-    @Column(name = "DELETED")
-    private Boolean deleted;
-
     @Column(name = "CRT_TIME")
     private LocalDateTime createdDate;
 

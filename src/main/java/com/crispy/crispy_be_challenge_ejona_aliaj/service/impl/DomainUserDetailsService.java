@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -26,19 +25,16 @@ public class DomainUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
-
-    public DomainUserDetailsService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public DomainUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     /**
      * Loads a user's details given their userName.
      *
-     * @param username
-     * @return
-     * @throws UsernameNotFoundException
+     * @param username username
+     * @return UserDetails
+     * @throws UsernameNotFoundException if username is not found
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -55,10 +51,6 @@ public class DomainUserDetailsService implements UserDetailsService {
                 user.getLogin(),
                 user.getPasswordHash(),
                 authorities);
-    }
-
-    private boolean isDeletedUser(UserEntity user) {
-        return Boolean.TRUE.equals(user.getDeleted());
     }
 
 }

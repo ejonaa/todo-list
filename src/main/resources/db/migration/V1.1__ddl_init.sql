@@ -5,7 +5,6 @@ create table IF NOT EXISTS T_USER
     PASSWORD_HASH varchar(60)  not null,
     FIRST_NAME    varchar(50)  not null,
     LAST_NAME     varchar(50)  not null,
-    DELETED       BOOLEAN,
     CRT_TIME      TIMESTAMP(6) not null,
     MOD_TIME      TIMESTAMP(6)
 );
