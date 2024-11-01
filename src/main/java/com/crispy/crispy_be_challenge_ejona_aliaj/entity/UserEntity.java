@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "T_USER")
-public class UserEntity extends AuditEntity {
+public class UserEntity {
 
     @Id
     @Column(name = "ID")
@@ -26,7 +26,7 @@ public class UserEntity extends AuditEntity {
     private String login;
 
     @Column(name = "PASSWORD_HASH")
-    private transient String passwordHash;
+    private String passwordHash;
 
     @Column(name = "FIRST_NAME")
     private String firstName;
