@@ -29,7 +29,7 @@ create table IF NOT EXISTS T_TASK
     DUE_DATE   DATE,
     COMPLETED  BOOLEAN,
     IMPORTANT  BOOLEAN,
-    PROJECT_ID INTEGER,
+    PROJECT_ID INTEGER      not null,
     USER_ID    INTEGER      not null,
     ID_USR_CRT varchar(50)  not null,
     CRT_TIME   TIMESTAMP(6) not null,
@@ -43,12 +43,14 @@ create table IF NOT EXISTS T_STEP
 (
     ID         BIGINT primary key,
     NAME       varchar(50)  not null,
-    TASK_ID    INTEGER,
-    USER_ID    INTEGER,
+    TASK_ID    INTEGER      not null,
+    USER_ID    INTEGER      not null,
     ID_USR_CRT varchar(50)  not null,
     CRT_TIME   TIMESTAMP(6) not null,
     ID_USR_MOD varchar(50),
-    MOD_TIME   TIMESTAMP(6)
+    MOD_TIME   TIMESTAMP(6),
+    FOREIGN KEY (TASK_ID) REFERENCES T_TASK (ID),
+    FOREIGN KEY (USER_ID) REFERENCES T_USER (ID)
 );
 
 CREATE SEQUENCE SEQ_T_USER AS BIGINT INCREMENT BY 1 START WITH 1;
