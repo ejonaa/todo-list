@@ -2,6 +2,7 @@ package com.crispy.crispy_be_challenge_ejona_aliaj.controller.api;
 
 import com.crispy.crispy_be_challenge_ejona_aliaj.controller.request.ProjectRequest;
 import com.crispy.crispy_be_challenge_ejona_aliaj.controller.request.validation.ValidateInputRequest;
+import com.crispy.crispy_be_challenge_ejona_aliaj.controller.response.ProjectResponse;
 import com.crispy.crispy_be_challenge_ejona_aliaj.dto.ProjectDTO;
 import com.crispy.crispy_be_challenge_ejona_aliaj.dto.converter.ProjectDtoConverter;
 import com.crispy.crispy_be_challenge_ejona_aliaj.service.ProjectService;
@@ -36,7 +37,7 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProjectDTO>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<ProjectResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok(projectService.findAll(pageable));
     }
 

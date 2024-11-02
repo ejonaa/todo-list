@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDate;
@@ -37,5 +39,12 @@ public class TaskEntity extends AuditEntity {
 
     @Column(name = "IMPORTANT")
     private Boolean important;
+
+    @ManyToOne
+    @JoinColumn(name = "PROJECT_ID", nullable = false)
+    private ProjectEntity project;
+
+    @Column(name = "USER_ID")
+    private Long userId;
 
 }

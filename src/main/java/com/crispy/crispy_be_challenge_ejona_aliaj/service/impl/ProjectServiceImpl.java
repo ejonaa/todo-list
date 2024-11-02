@@ -1,5 +1,6 @@
 package com.crispy.crispy_be_challenge_ejona_aliaj.service.impl;
 
+import com.crispy.crispy_be_challenge_ejona_aliaj.controller.response.ProjectResponse;
 import com.crispy.crispy_be_challenge_ejona_aliaj.converter.ProjectMapper;
 import com.crispy.crispy_be_challenge_ejona_aliaj.dto.ProjectDTO;
 import com.crispy.crispy_be_challenge_ejona_aliaj.entity.ProjectEntity;
@@ -33,12 +34,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Page<ProjectDTO> findAll(Pageable pageable) {
-        return projectRepository.findByUserId(getUserId(), PageRequest.of(
+    public Page<ProjectResponse> findAll(Pageable pageable) {
+        return projectRepository.findByUserIdOrderById(getUserId(), PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
                 pageable.getSortOr(Sort.by(Sort.Direction.ASC, "title"))
-        )).map(projectMapper::toDto);
+        )).map(projectMapper::toResponse);
     }
 
     @Override

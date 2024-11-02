@@ -1,12 +1,13 @@
 package com.crispy.crispy_be_challenge_ejona_aliaj.service;
 
+import com.crispy.crispy_be_challenge_ejona_aliaj.controller.response.ProjectResponse;
 import com.crispy.crispy_be_challenge_ejona_aliaj.dto.ProjectDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ProjectService {
 
-    Page<ProjectDTO> findAll(Pageable pageable);
+    Page<ProjectResponse> findAll(Pageable pageable);
 
     ProjectDTO createProject(ProjectDTO projectDTO);
 
