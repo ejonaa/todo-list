@@ -9,4 +9,6 @@ public interface ProjectService {
     Page<ProjectDTO> findAll(Pageable pageable);
 
     ProjectDTO createProject(ProjectDTO projectDTO);
+
+    ProjectDTO updateProject(ProjectDTO projectDTO);
 }

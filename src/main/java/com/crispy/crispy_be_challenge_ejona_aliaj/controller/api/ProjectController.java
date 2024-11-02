@@ -10,13 +10,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/1.0/projects")
@@ -47,4 +50,21 @@ public class ProjectController {
                 .toUri();
         return ResponseEntity.created(locationOfNewProject).build();
     }
+
+    @ValidateInputRequest
+    @PutMapping(path = "/{projectId}", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateProject(@PathVariable Long projectId, @RequestBody ProjectRequest projectRequest) {
+        ProjectDTO projectDTO = projectDtoConverter.convert(projectRequest);
+        if (Objects.nonNull(projectDTO)) {
+            projectDTO.setId(projectId);
+        }
+        ProjectDTO updatedProject = projectService.updateProject(projectDTO);
+
+        if (Objects.nonNull(updatedProject)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }

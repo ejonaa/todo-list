@@ -33,8 +33,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Page<ProjectDTO> findAll(Pageable pageable) {
-        UserEntity user = userRepository.findByLogin(SecurityUtil.getUserName()).orElseThrow(() -> new AuthorizationException("Token Not Provided"));
-        return projectRepository.findByUserId(user.getId(), PageRequest.of(
+        return projectRepository.findByUserId(getUserId(), PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
                 pageable.getSortOr(Sort.by(Sort.Direction.ASC, "title"))
@@ -44,8 +43,21 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDTO createProject(ProjectDTO projectDTO) {
         ProjectEntity project = projectMapper.fromDto(projectDTO);
-        UserEntity user = userRepository.findByLogin(SecurityUtil.getUserName()).orElseThrow(() -> new AuthorizationException("Token Not Provided"));
-        project.setUserId(user.getId());
+        project.setUserId(getUserId());
         return projectMapper.toDto(projectRepository.save(project));
     }
+
+    @Override
+    public ProjectDTO updateProject(ProjectDTO projectDTO) {
+        return projectRepository.findByIdAndUserId(projectDTO.getId(), getUserId()).map(projectEntity -> {
+            projectEntity.setTitle(projectDTO.getTitle());
+            return projectMapper.toDto(projectRepository.save(projectEntity));
+        }).orElse(null);
+    }
+
+    private Long getUserId() {
+        UserEntity user = userRepository.findByLogin(SecurityUtil.getUserName()).orElseThrow(() -> new AuthorizationException("Token Not Provided"));
+        return user.getId();
+    }
+
 }
