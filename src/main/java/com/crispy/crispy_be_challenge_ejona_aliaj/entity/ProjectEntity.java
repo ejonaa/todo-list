@@ -28,7 +28,7 @@ public class ProjectEntity extends AuditEntity {
     @Column(name = "TITLE")
     private String title;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project", orphanRemoval = true)
     private List<TaskEntity> tasks;
 
     @Column(name = "USER_ID")
