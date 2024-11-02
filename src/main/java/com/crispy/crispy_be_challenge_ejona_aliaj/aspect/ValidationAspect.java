@@ -18,6 +18,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * This aspect helps to return bean validation errors in a more readable form. <br/>
+ * It is executed when the method is annotated with @ValidateInputRequest annotation. <br/>
+ * The dto that is going to be validated has to implement Validatable interface.
+ *
+ */
 @Slf4j
 @Aspect
 @Component
