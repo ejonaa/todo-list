@@ -1,4 +1,4 @@
-package com.crispy.crispy_be_challenge_ejona_aliaj.service.impl;
+package com.crispy.crispy_be_challenge_ejona_aliaj.security;
 
 
 import com.crispy.crispy_be_challenge_ejona_aliaj.entity.UserEntity;
