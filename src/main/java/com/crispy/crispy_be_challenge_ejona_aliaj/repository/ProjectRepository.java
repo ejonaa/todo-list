@@ -14,4 +14,6 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, Long> {
     Page<ProjectEntity> findByUserId(Long userId, Pageable pageable);
 
     Optional<ProjectEntity> findByIdAndUserId(Long id, Long userId);
+
+    Long deleteByIdAndUserId(Long id, Long userId);
 }

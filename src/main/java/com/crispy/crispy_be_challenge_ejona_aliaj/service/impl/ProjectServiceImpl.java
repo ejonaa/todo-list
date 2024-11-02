@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -53,6 +54,13 @@ public class ProjectServiceImpl implements ProjectService {
             projectEntity.setTitle(projectDTO.getTitle());
             return projectMapper.toDto(projectRepository.save(projectEntity));
         }).orElse(null);
+    }
+
+    @Transactional
+    @Override
+    public boolean deleteProject(Long projectId) {
+        Long deleted = projectRepository.deleteByIdAndUserId(projectId, getUserId());
+        return !deleted.equals(0L);
     }
 
     private Long getUserId() {
