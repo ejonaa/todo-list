@@ -11,6 +11,8 @@ import com.crispy.crispy_be_challenge_ejona_aliaj.security.SecurityUtil;
 import com.crispy.crispy_be_challenge_ejona_aliaj.service.TaskService;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class TaskServiceImpl implements TaskService {
 
@@ -31,6 +33,28 @@ public class TaskServiceImpl implements TaskService {
         TaskEntity task = taskMapper.fromDto(taskDTO);
         task.setUserId(getUserId());
         return taskMapper.toDto(taskRepository.save(task));
+    }
+
+    @Override
+    public TaskDTO updateTask(TaskDTO taskDTO) {
+        return taskRepository.findByIdAndProjectIdAndUserId(taskDTO.getId(), taskDTO.getProjectId(), getUserId()).map(taskEntity -> {
+            if (Objects.nonNull(taskDTO.getName())) {
+                taskEntity.setName(taskDTO.getName());
+            }
+            if (Objects.nonNull(taskDTO.getNote())) {
+                taskEntity.setNote(taskDTO.getNote());
+            }
+            if (Objects.nonNull(taskDTO.getImportant())) {
+                taskEntity.setImportant(taskDTO.getImportant());
+            }
+            if (Objects.nonNull(taskDTO.getCompleted())) {
+                taskEntity.setCompleted(taskDTO.getCompleted());
+            }
+            if (Objects.nonNull(taskDTO.getDueDate())) {
+                taskEntity.setDueDate(taskDTO.getDueDate());
+            }
+            return taskMapper.toDto(taskRepository.save(taskEntity));
+        }).orElse(null);
     }
 
     private Long getUserId() {

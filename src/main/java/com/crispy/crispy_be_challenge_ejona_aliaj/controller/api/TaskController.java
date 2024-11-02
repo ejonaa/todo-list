@@ -7,6 +7,7 @@ import com.crispy.crispy_be_challenge_ejona_aliaj.dto.converter.TaskDtoConverter
 import com.crispy.crispy_be_challenge_ejona_aliaj.service.TaskService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,5 +45,21 @@ public class TaskController {
                 .toUri();
         return ResponseEntity.created(locationOfNewProject).build();
     }
-    
+
+    @PatchMapping(path = "/{projectId}/tasks/{taskId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateTask(@PathVariable Long projectId, @PathVariable Long taskId,
+                                           @RequestBody TaskRequest taskRequest) {
+        TaskDTO taskDTO = taskDtoConverter.convert(taskRequest);
+        if (Objects.nonNull(taskDTO)) {
+            taskDTO.setId(taskId);
+            taskDTO.setProjectId(projectId);
+        }
+        TaskDTO updatedTask = taskService.updateTask(taskDTO);
+
+        if (Objects.nonNull(updatedTask)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }
