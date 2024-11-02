@@ -11,7 +11,5 @@ public class StepDTO {
 
     private Long taskId;
 
-    private Long projectId;
-
     private Long userId;
 }

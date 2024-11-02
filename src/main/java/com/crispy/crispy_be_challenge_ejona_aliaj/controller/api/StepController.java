@@ -36,10 +36,9 @@ public class StepController {
                                            @RequestBody StepRequest newStepRequest, UriComponentsBuilder ucb) {
         StepDTO stepDTO = stepMapper.toDto(newStepRequest);
         if (Objects.nonNull(stepDTO)) {
-            stepDTO.setProjectId(projectId);
             stepDTO.setTaskId(taskId);
         }
-        StepDTO savedStep = stepService.createStep(stepDTO);
+        StepDTO savedStep = stepService.createStep(projectId, stepDTO);
         if (Objects.nonNull(savedStep)) {
             URI locationOfNewProject = ucb.path("/api/1.0/projects/{projectId}/tasks/{taskId}/steps/{id}")
                     .buildAndExpand(projectId, taskId, savedStep.getId())

@@ -34,8 +34,8 @@ public class StepServiceImpl implements StepService {
     }
 
     @Override
-    public StepDTO createStep(StepDTO stepDTO) {
-        Optional<TaskEntity> task = taskRepository.findByIdAndProjectIdAndUserId(stepDTO.getTaskId(), stepDTO.getProjectId(), getUserId());
+    public StepDTO createStep(Long projectId, StepDTO stepDTO) {
+        Optional<TaskEntity> task = taskRepository.findByIdAndProjectIdAndUserId(stepDTO.getTaskId(), projectId, getUserId());
         if (task.isPresent()) {
             StepEntity step = stepMapper.fromDto(stepDTO);
             step.setUserId(getUserId());

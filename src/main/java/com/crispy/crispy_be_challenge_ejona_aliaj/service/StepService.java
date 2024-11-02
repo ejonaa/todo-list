@@ -4,5 +4,5 @@ import com.crispy.crispy_be_challenge_ejona_aliaj.dto.StepDTO;
 
 public interface StepService {
 
-    StepDTO createStep(StepDTO stepDTO);
+    StepDTO createStep(Long projectId, StepDTO stepDTO);
 }

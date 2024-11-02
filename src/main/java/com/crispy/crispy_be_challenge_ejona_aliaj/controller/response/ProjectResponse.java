@@ -13,7 +13,7 @@ public class ProjectResponse implements Serializable {
 
     private String title;
 
-    private List<TaskDTO> tasks;
+    private List<TaskResponse> tasks;
 
     private Long userId;
 
