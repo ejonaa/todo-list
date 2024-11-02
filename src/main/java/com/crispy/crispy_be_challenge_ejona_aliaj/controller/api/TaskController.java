@@ -39,11 +39,14 @@ public class TaskController {
             taskDTO.setProjectId(projectId);
         }
         TaskDTO savedTask = taskService.createTask(taskDTO);
-        URI locationOfNewProject = ucb
-                .path("/api/1.0/projects/{projectId}/tasks/{id}")
-                .buildAndExpand(projectId, savedTask.getId())
-                .toUri();
-        return ResponseEntity.created(locationOfNewProject).build();
+        if (Objects.nonNull(savedTask)) {
+            URI locationOfNewProject = ucb
+                    .path("/api/1.0/projects/{projectId}/tasks/{id}")
+                    .buildAndExpand(projectId, savedTask.getId())
+                    .toUri();
+            return ResponseEntity.created(locationOfNewProject).build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PatchMapping(path = "/{projectId}/tasks/{taskId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
