@@ -23,7 +23,7 @@ public class AuditEntity {
 
     @Column(name = "ID_USR_CRT")
     @CreatedBy
-    private Long createdBy;
+    private String createdBy;
 
     @Column(name = "MOD_TIME", nullable = false, updatable = false)
     @LastModifiedDate
@@ -31,6 +31,6 @@ public class AuditEntity {
 
     @Column(name = "ID_USR_MOD")
     @LastModifiedBy
-    private Long modifiedBy;
+    private String modifiedBy;
 
 }

@@ -12,7 +12,6 @@ public class ProjectDtoConverter implements Converter<ProjectRequest, ProjectDTO
     public ProjectDTO convert(ProjectRequest source) {
         ProjectDTO projectDTO = new ProjectDTO();
         projectDTO.setTitle(source.getTitle());
-        projectDTO.setUserId(source.getUserId());
         return projectDTO;
     }
 }

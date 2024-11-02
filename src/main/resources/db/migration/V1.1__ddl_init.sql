@@ -1,7 +1,7 @@
 create table IF NOT EXISTS T_USER
 (
     ID            BIGINT primary key,
-    LOGIN         varchar(50)  not null,
+    LOGIN         varchar(50)  not null unique,
     PASSWORD_HASH varchar(60)  not null,
     FIRST_NAME    varchar(50)  not null,
     LAST_NAME     varchar(50)  not null,
@@ -13,11 +13,12 @@ create table IF NOT EXISTS T_PROJECT
 (
     ID         BIGINT primary key,
     TITLE      varchar(50)  not null,
-    USER_ID    INTEGER,
-    ID_USR_CRT BIGINT       not null,
+    USER_ID    INTEGER      not null,
+    ID_USR_CRT varchar(50)  not null,
     CRT_TIME   TIMESTAMP(6) not null,
-    ID_USR_MOD BIGINT,
-    MOD_TIME   TIMESTAMP(6)
+    ID_USR_MOD varchar(50),
+    MOD_TIME   TIMESTAMP(6),
+    FOREIGN KEY (USER_ID) REFERENCES T_USER (ID)
 );
 
 create table IF NOT EXISTS T_TASK
@@ -30,9 +31,9 @@ create table IF NOT EXISTS T_TASK
     IMPORTANT  BOOLEAN,
     LIST_ID    INTEGER,
     USER_ID    INTEGER,
-    ID_USR_CRT BIGINT       not null,
+    ID_USR_CRT varchar(50)  not null,
     CRT_TIME   TIMESTAMP(6) not null,
-    ID_USR_MOD BIGINT,
+    ID_USR_MOD varchar(50),
     MOD_TIME   TIMESTAMP(6)
 );
 
@@ -42,9 +43,9 @@ create table IF NOT EXISTS T_STEP
     NAME       varchar(50)  not null,
     TASK_ID    INTEGER,
     USER_ID    INTEGER,
-    ID_USR_CRT BIGINT       not null,
+    ID_USR_CRT varchar(50)  not null,
     CRT_TIME   TIMESTAMP(6) not null,
-    ID_USR_MOD BIGINT,
+    ID_USR_MOD varchar(50),
     MOD_TIME   TIMESTAMP(6)
 );
 
