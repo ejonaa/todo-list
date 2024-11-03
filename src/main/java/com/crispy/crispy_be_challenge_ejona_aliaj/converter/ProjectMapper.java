@@ -1,5 +1,6 @@
 package com.crispy.crispy_be_challenge_ejona_aliaj.converter;
 
+import com.crispy.crispy_be_challenge_ejona_aliaj.controller.request.ProjectRequest;
 import com.crispy.crispy_be_challenge_ejona_aliaj.controller.response.ProjectResponse;
 import com.crispy.crispy_be_challenge_ejona_aliaj.controller.response.TaskResponse;
 import com.crispy.crispy_be_challenge_ejona_aliaj.dto.ProjectDTO;
@@ -56,6 +57,11 @@ public class ProjectMapper {
     public ProjectResponse toResponse(ProjectEntity product) {
         return modelMapper.map(product, ProjectResponse.class);
     }
+
+    public ProjectDTO toDto(ProjectRequest request) {
+        return modelMapper.map(request, ProjectDTO.class);
+    }
+
 
     Converter<List<TaskEntity>, List<TaskResponse>> convertTasks = new AbstractConverter<>() {
         protected List<TaskResponse> convert(List<TaskEntity> tasks) {

@@ -2,8 +2,8 @@ package com.crispy.crispy_be_challenge_ejona_aliaj.controller.api;
 
 import com.crispy.crispy_be_challenge_ejona_aliaj.controller.request.TaskRequest;
 import com.crispy.crispy_be_challenge_ejona_aliaj.controller.request.validation.ValidateInputRequest;
+import com.crispy.crispy_be_challenge_ejona_aliaj.converter.TaskMapper;
 import com.crispy.crispy_be_challenge_ejona_aliaj.dto.TaskDTO;
-import com.crispy.crispy_be_challenge_ejona_aliaj.dto.converter.TaskDtoConverter;
 import com.crispy.crispy_be_challenge_ejona_aliaj.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,12 +34,12 @@ import java.util.Objects;
 @RequestMapping("/api/1.0/projects")
 public class TaskController {
 
-    private final TaskDtoConverter taskDtoConverter;
+    private final TaskMapper taskMapper;
 
     private final TaskService taskService;
 
-    public TaskController(TaskDtoConverter taskDtoConverter, TaskService taskService) {
-        this.taskDtoConverter = taskDtoConverter;
+    public TaskController(TaskMapper taskMapper, TaskService taskService) {
+        this.taskMapper = taskMapper;
         this.taskService = taskService;
     }
 
@@ -57,7 +57,7 @@ public class TaskController {
     @ValidateInputRequest
     @PostMapping(path = "/{projectId}/tasks", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createTask(@PathVariable Long projectId, @RequestBody TaskRequest newTaskRequest, UriComponentsBuilder ucb) {
-        TaskDTO taskDTO = taskDtoConverter.convert(newTaskRequest);
+        TaskDTO taskDTO = taskMapper.toDto(newTaskRequest);
         if (Objects.nonNull(taskDTO)) {
             taskDTO.setProjectId(projectId);
         }
@@ -87,7 +87,7 @@ public class TaskController {
     @PatchMapping(path = "/{projectId}/tasks/{taskId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateTask(@PathVariable Long projectId, @PathVariable Long taskId,
                                            @RequestBody TaskRequest taskRequest) {
-        TaskDTO taskDTO = taskDtoConverter.convert(taskRequest);
+        TaskDTO taskDTO = taskMapper.toDto(taskRequest);
         if (Objects.nonNull(taskDTO)) {
             taskDTO.setId(taskId);
             taskDTO.setProjectId(projectId);

@@ -4,7 +4,7 @@ import com.crispy.crispy_be_challenge_ejona_aliaj.controller.request.security.Au
 import com.crispy.crispy_be_challenge_ejona_aliaj.controller.request.security.NewUserRequest;
 import com.crispy.crispy_be_challenge_ejona_aliaj.controller.request.validation.ValidateInputRequest;
 import com.crispy.crispy_be_challenge_ejona_aliaj.controller.response.AuthenticationResponse;
-import com.crispy.crispy_be_challenge_ejona_aliaj.dto.converter.UserDtoConverter;
+import com.crispy.crispy_be_challenge_ejona_aliaj.converter.UserMapper;
 import com.crispy.crispy_be_challenge_ejona_aliaj.exception.AuthorizationException;
 import com.crispy.crispy_be_challenge_ejona_aliaj.exception.LoginAlreadyUsedException;
 import com.crispy.crispy_be_challenge_ejona_aliaj.security.jwt.TokenProvider;
@@ -43,7 +43,7 @@ public class AuthenticationController {
 
     private final UserService userService;
 
-    private final UserDtoConverter userDtoConverter;
+    private final UserMapper userMapper;
 
     /**
      * Instantiates a new Authentication controller.
@@ -51,13 +51,13 @@ public class AuthenticationController {
      * @param authenticationManagerBuilder authenticationManagerBuilder
      * @param userService                  service for user management
      * @param tokenProvider                token provider
-     * @param userDtoConverter             user converter
+     * @param userMapper                   user converter
      */
-    public AuthenticationController(AuthenticationManagerBuilder authenticationManagerBuilder, UserService userService, TokenProvider tokenProvider, UserDtoConverter userDtoConverter) {
+    public AuthenticationController(AuthenticationManagerBuilder authenticationManagerBuilder, UserService userService, TokenProvider tokenProvider, UserMapper userMapper) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userService = userService;
         this.tokenProvider = tokenProvider;
-        this.userDtoConverter = userDtoConverter;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -97,7 +97,7 @@ public class AuthenticationController {
             throw new LoginAlreadyUsedException("Username has already been taken");
         }
 
-        userService.createUser(userDtoConverter.convert(newUserRequest), newUserRequest.getPassword());
+        userService.createUser(userMapper.toDto(newUserRequest), newUserRequest.getPassword());
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

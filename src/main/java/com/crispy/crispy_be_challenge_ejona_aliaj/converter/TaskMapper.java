@@ -1,5 +1,6 @@
 package com.crispy.crispy_be_challenge_ejona_aliaj.converter;
 
+import com.crispy.crispy_be_challenge_ejona_aliaj.controller.request.TaskRequest;
 import com.crispy.crispy_be_challenge_ejona_aliaj.dto.TaskDTO;
 import com.crispy.crispy_be_challenge_ejona_aliaj.entity.TaskEntity;
 import org.modelmapper.ModelMapper;
@@ -29,6 +30,10 @@ public class TaskMapper {
 
     public TaskEntity fromDto(TaskDTO taskDTO) {
         return modelMapper.map(taskDTO, TaskEntity.class);
+    }
+
+    public TaskDTO toDto(TaskRequest request) {
+        return modelMapper.map(request, TaskDTO.class);
     }
 
 }

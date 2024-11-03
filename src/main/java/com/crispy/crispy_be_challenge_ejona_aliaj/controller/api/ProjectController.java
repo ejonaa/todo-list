@@ -3,8 +3,8 @@ package com.crispy.crispy_be_challenge_ejona_aliaj.controller.api;
 import com.crispy.crispy_be_challenge_ejona_aliaj.controller.request.ProjectRequest;
 import com.crispy.crispy_be_challenge_ejona_aliaj.controller.request.validation.ValidateInputRequest;
 import com.crispy.crispy_be_challenge_ejona_aliaj.controller.response.ProjectResponse;
+import com.crispy.crispy_be_challenge_ejona_aliaj.converter.ProjectMapper;
 import com.crispy.crispy_be_challenge_ejona_aliaj.dto.ProjectDTO;
-import com.crispy.crispy_be_challenge_ejona_aliaj.dto.converter.ProjectDtoConverter;
 import com.crispy.crispy_be_challenge_ejona_aliaj.service.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -39,12 +39,12 @@ import java.util.Objects;
 @RequestMapping("/api/1.0/projects")
 public class ProjectController {
 
-    private final ProjectDtoConverter projectDtoConverter;
+    private final ProjectMapper projectMapper;
 
     private final ProjectService projectService;
 
-    public ProjectController(ProjectDtoConverter projectDtoConverter, ProjectService projectService) {
-        this.projectDtoConverter = projectDtoConverter;
+    public ProjectController(ProjectMapper projectMapper, ProjectService projectService) {
+        this.projectMapper = projectMapper;
         this.projectService = projectService;
     }
 
@@ -74,7 +74,7 @@ public class ProjectController {
     @ValidateInputRequest
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createProject(@RequestBody ProjectRequest newProjectRequest, UriComponentsBuilder ucb) {
-        ProjectDTO projectDTO = projectDtoConverter.convert(newProjectRequest);
+        ProjectDTO projectDTO = projectMapper.toDto(newProjectRequest);
         ProjectDTO savedProject = projectService.createProject(projectDTO);
         URI locationOfNewProject = ucb
                 .path("1.0/projects/{id}")
@@ -99,7 +99,7 @@ public class ProjectController {
     @PutMapping(path = "/{projectId}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateProject(@PathVariable Long projectId, @RequestBody ProjectRequest projectRequest) {
-        ProjectDTO projectDTO = projectDtoConverter.convert(projectRequest);
+        ProjectDTO projectDTO = projectMapper.toDto(projectRequest);
         if (Objects.nonNull(projectDTO)) {
             projectDTO.setId(projectId);
         }
