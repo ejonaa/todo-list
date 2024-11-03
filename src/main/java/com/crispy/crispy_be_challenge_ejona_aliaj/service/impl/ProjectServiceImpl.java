@@ -35,7 +35,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Page<ProjectResponse> findAll(Pageable pageable) {
-        return projectRepository.findByUserIdOrderById(getUserId(), PageRequest.of(
+        return projectRepository.findByUserId(getUserId(), PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
                 pageable.getSortOr(Sort.by(Sort.Direction.ASC, "title"))
