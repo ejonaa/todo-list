@@ -18,15 +18,16 @@ You run it using the ```java -jar``` command.
 
 * Clone this repository
 * Make sure you are using JDK 11
+* Change to your favourite profile in application.yml file
 * You can build the project and run the tests by running 
 ```
-.\mvnw -Dspring.profiles.active=dev clean verify
+.\mvnw clean verify
 ```
 * Once successfully built, you can run the service by one of these two methods:
 ```
-        java -jar "-Dspring.profiles.active=prod" target/crispy_be_challenge_ejona-aliaj-0.0.1-SNAPSHOT.jar
+        java -jar target/crispy_be_challenge_ejona-aliaj-0.0.1-SNAPSHOT.jar
 or
-        .\mvnw spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=prod"
+        .\mvnw spring-boot:run
 ```
 
 Once the application runs you should see something like this
@@ -48,9 +49,10 @@ Here is what this little application demonstrates:
 * CRUD REST APIs to manage a ToDo List
 * Exception mapping from application exceptions to the right HTTP response with exception details in the body
 * Using AOP and custom annotation to validate user input
-* *Spring Data* Integration with JPA/Hibernate
+* *Spring Data* Integration with JPA
 * Demonstrates a simple test for account creation
 * All APIs are "self-documented" by Swagger2 using annotations
+* Using docker
 
 Here are some endpoints you can call:
 
@@ -115,15 +117,27 @@ Run the server and browse to http://localhost:8091/swagger-ui/index.html#/
 The 'dev' profile runs on H2 in-memory database. To view and query the database you can browse to http://localhost:8090/h2-console. 
 Default username is 'sa' with a blank password.
 
-### Running the project PostgreSQL
+### Running the project using PostgreSQL
 
-Run it using the 'prod' profile:
+To start a postgresql database in a docker container, run:
+``` 
+docker-compose -f /docker/postgresql.yml up
+```
 
+Run the following first
 ```
-        java -jar "-Dspring.profiles.active=prod" target/crispy_be_challenge_ejona-aliaj-0.0.1-SNAPSHOT.jar
-or
-        .\mvnw spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=prod"
+create database todolist;
+create user todo_list_user with encrypted password 'admin';
+grant all privileges on database todolist to todo_list_user;
+
+GRANT ALL ON ALL TABLES IN SCHEMA "public" to todo_list_user;
+GRANT USAGE ON SCHEMA public to todo_list_user;
+GRANT ALL ON SCHEMA public to todo_list_user;
+
+ALTER DATABASE todolist OWNER TO todo_list_user;
 ```
+
+[Then you can follow instructions here](#how-to-run)
 
 ## User Manual
 
