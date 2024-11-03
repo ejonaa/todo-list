@@ -7,7 +7,7 @@ logging:
 
 spring:
   profiles:
-    active: dev
+    default: dev
   mvc:
     path match:
       matching-strategy: ant_path_matcher
