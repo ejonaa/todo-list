@@ -52,7 +52,7 @@ Here is what this little application demonstrates:
 * *Spring Data* Integration with JPA
 * Demonstrates a simple test for account creation
 * All APIs are "self-documented" by Swagger2 using annotations
-* Using docker
+* Using docker to containerize Postgres
 
 Here are some endpoints you can call:
 
@@ -121,7 +121,7 @@ Default username is 'sa' with a blank password.
 
 To start a postgresql database in a docker container, run:
 ``` 
-docker-compose -f /docker/postgresql.yml up
+docker-compose -f postgresql.yml up -d
 ```
 
 Run the following first
