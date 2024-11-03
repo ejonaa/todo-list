@@ -9,6 +9,10 @@ import com.crispy.crispy_be_challenge_ejona_aliaj.exception.AuthorizationExcepti
 import com.crispy.crispy_be_challenge_ejona_aliaj.exception.LoginAlreadyUsedException;
 import com.crispy.crispy_be_challenge_ejona_aliaj.security.jwt.TokenProvider;
 import com.crispy.crispy_be_challenge_ejona_aliaj.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +26,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * The type Authentication controller.
+ *
+ * @author ejoaliaj
+ */
 @Slf4j
 @RestController
+@Tag(name = "AuthenticationController", description = "API to manage user account")
 @RequestMapping("/api")
 public class AuthenticationController {
 
@@ -35,6 +45,14 @@ public class AuthenticationController {
 
     private final UserDtoConverter userDtoConverter;
 
+    /**
+     * Instantiates a new Authentication controller.
+     *
+     * @param authenticationManagerBuilder authenticationManagerBuilder
+     * @param userService                  service for user management
+     * @param tokenProvider                token provider
+     * @param userDtoConverter             user converter
+     */
     public AuthenticationController(AuthenticationManagerBuilder authenticationManagerBuilder, UserService userService, TokenProvider tokenProvider, UserDtoConverter userDtoConverter) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userService = userService;
@@ -42,6 +60,16 @@ public class AuthenticationController {
         this.userDtoConverter = userDtoConverter;
     }
 
+    /**
+     * User authentication by providing username and password
+     *
+     * @param authenticationRequest user credentials
+     * @return authentication token
+     */
+    @Operation(summary = "User authentication by providing username and password")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful authentication"),
+            @ApiResponse(responseCode = "401", description = "Bad credentials")})
     @PostMapping(value = "/authenticate")
     public ResponseEntity<AuthenticationResponse> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
 
@@ -52,6 +80,16 @@ public class AuthenticationController {
         return ResponseEntity.ok(new AuthenticationResponse(token));
     }
 
+    /**
+     * Create user account
+     *
+     * @param newUserRequest user details
+     */
+    @Operation(summary = "Create user account by providing user details in the request")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Account is successfully created"),
+            @ApiResponse(responseCode = "400", description = "Validation errors"),
+            @ApiResponse(responseCode = "409", description = "Username is already used")})
     @ValidateInputRequest
     @PostMapping(value = "/create-account")
     public ResponseEntity<Void> createAccount(@RequestBody NewUserRequest newUserRequest) {
@@ -64,7 +102,12 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-
+    /**
+     * Check if username and password are valid
+     *
+     * @param username username of the user
+     * @param password password of the user
+     */
     private void authenticate(String username, String password) {
         try {
             authenticationManagerBuilder.getObject()

@@ -6,6 +6,11 @@ import com.crispy.crispy_be_challenge_ejona_aliaj.controller.response.ProjectRes
 import com.crispy.crispy_be_challenge_ejona_aliaj.dto.ProjectDTO;
 import com.crispy.crispy_be_challenge_ejona_aliaj.dto.converter.ProjectDtoConverter;
 import com.crispy.crispy_be_challenge_ejona_aliaj.service.ProjectService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -23,7 +28,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.Objects;
 
+/**
+ * The type Project controller.
+ *
+ * @author ejoaliaj
+ */
 @RestController
+@SecurityRequirement(name = "Bearer Authentication")
+@Tag(name = "ProjectController", description = "API to manage projects")
 @RequestMapping("/api/1.0/projects")
 public class ProjectController {
 
@@ -36,11 +48,29 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    /**
+     * Retrieve the list of projects that are created by the logged-in user.
+     *
+     * @param pageable paging options
+     * @return the list of projects created by user
+     */
+    @Operation(summary = "Retrieve the list of projects that are created by the logged-in user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful retrieval")})
     @GetMapping
     public ResponseEntity<Page<ProjectResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok(projectService.findAll(pageable));
     }
 
+    /**
+     * Create a project
+     *
+     * @param newProjectRequest project details
+     */
+    @Operation(summary = "Create a project")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successful creation"),
+            @ApiResponse(responseCode = "400", description = "Validation errors")})
     @ValidateInputRequest
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createProject(@RequestBody ProjectRequest newProjectRequest, UriComponentsBuilder ucb) {
@@ -53,6 +83,18 @@ public class ProjectController {
         return ResponseEntity.created(locationOfNewProject).build();
     }
 
+    /**
+     * Update a given project.
+     *
+     * @param projectId      id of project to update
+     * @param projectRequest project data
+     */
+    @Operation(summary = "Update a given project")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful update"),
+            @ApiResponse(responseCode = "400", description = "Validation errors"),
+            @ApiResponse(responseCode = "404", description = "Project not found")})
+    @SecurityRequirement(name = "Bearer Authentication")
     @ValidateInputRequest
     @PutMapping(path = "/{projectId}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -69,6 +111,16 @@ public class ProjectController {
         return ResponseEntity.notFound().build();
     }
 
+    /**
+     * Delete a project and all its related data.
+     *
+     * @param projectId id of project to delete
+     */
+    @Operation(summary = "Delete a project and all its related data.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successful deletion"),
+            @ApiResponse(responseCode = "404", description = "Project not found")})
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{projectId}")
     public ResponseEntity<Void> deleteProject(@PathVariable Long projectId) {
         boolean deleted = projectService.deleteProject(projectId);

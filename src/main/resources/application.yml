@@ -1,3 +1,6 @@
+server:
+  port: 8091
+
 logging:
   level:
     root: info
@@ -5,6 +8,9 @@ logging:
 spring:
   profiles:
     active: dev
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
   jpa:
     hibernate:
       ddl-auto: none
