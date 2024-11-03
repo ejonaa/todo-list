@@ -7,7 +7,9 @@ users to keep track of their essential tasks and notes, helping them manage thei
 ## Build with
 - [Java 11](https://www.oracle.com/uk/java/technologies/javase/jdk11-archive-downloads.html)
 - [Spring Boot 2.7.5](https://spring.io/blog/2022/10/20/spring-boot-2-7-5-available-now)
+- H2 / PostgreSQL DB
 - Maven
+- Git
 
 ## How to Run
 
@@ -15,13 +17,16 @@ This application is packaged as a jar which has Tomcat 9 embedded. No Tomcat ins
 You run it using the ```java -jar``` command.
 
 * Clone this repository
-* Make sure you are using JDK 11 and Maven 3.x
-* You can build the project and run the tests by running ```mvn clean package```
+* Make sure you are using JDK 11
+* You can build the project and run the tests by running 
+```
+.\mvnw -Dspring.profiles.active=dev clean verify
+```
 * Once successfully built, you can run the service by one of these two methods:
 ```
         java -jar "-Dspring.profiles.active=prod" target/crispy_be_challenge_ejona-aliaj-0.0.1-SNAPSHOT.jar
 or
-        mvn spring-boot:run -Drun.arguments="spring.profiles.active=prod"
+        .\mvnw spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=prod"
 ```
 
 Once the application runs you should see something like this
@@ -115,9 +120,9 @@ Default username is 'sa' with a blank password.
 Run it using the 'prod' profile:
 
 ```
-        java -jar -Dspring.profiles.active=prod target/crispy_be_challenge_ejona-aliaj-0.0.1-SNAPSHOT.jar
+        java -jar "-Dspring.profiles.active=prod" target/crispy_be_challenge_ejona-aliaj-0.0.1-SNAPSHOT.jar
 or
-        mvn spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=dev"
+        .\mvnw spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=prod"
 ```
 
 ## User Manual
